@@ -1,0 +1,32 @@
+{
+  "name": "projet",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch-path=./server.js --watch-path=./routes --watch-path=./middleware --watch-path=./config --watch-path=./utils --watch-path=./prisma/client.js --watch-path=./views server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.9.1",
+    "@prisma/client": "^7.9.1",
+    "bcrypt": "^6.0.0",
+    "connect-pg-simple": "^10.0.0",
+    "dotenv": "^17.4.2",
+    "ejs": "^6.0.1",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.6.2",
+    "express-session": "^1.19.0",
+    "helmet": "^8.3.0",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
+    "pdfkit": "^0.19.1",
+    "pg": "^8.23.0",
+    "prisma": "^7.9.1"
+  }
+}

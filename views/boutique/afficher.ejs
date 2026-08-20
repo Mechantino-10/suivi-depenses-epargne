@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <%- include('../partials/head', { titre: 'Ma boutique' }) %>
+</head>
+<body class="avec-nav-bas">
+  <%- include('../partials/nav', { actif: 'boutique' }) %>
+  <%- include('../partials/flash') %>
+
+  <h1>Ma boutique</h1>
+
+  <% if (erreur) { %>
+    <div class="erreurs"><%= erreur %></div>
+  <% } %>
+
+  <div class="card">
+    <p class="objectif-label">Nom de la boutique</p>
+    <p class="objectif-montant" style="font-size: 1.2rem;"><%= boutique.nom %></p>
+
+    <% if (currentUser.role === 'PROPRIETAIRE') { %>
+      <form method="POST" action="/boutique" class="form-inline" style="margin-top: 12px;">
+        <input type="text" name="nom" placeholder="Nouveau nom" maxlength="100" required />
+        <button type="submit">Renommer</button>
+      </form>
+    <% } %>
+  </div>
+
+  <div class="card">
+    <p class="objectif-label">Code d'invitation</p>
+    <p class="code-invitation"><%= boutique.codeInvitation %></p>
+    <p class="objectif-echeance">Donne ce code à un employé pour qu'il rejoigne la boutique à l'inscription.</p>
+
+    <% if (currentUser.role === 'PROPRIETAIRE') { %>
+      <form method="POST" action="/boutique/regenerer-code" data-confirm="Générer un nouveau code ? L'ancien ne fonctionnera plus.">
+        <button type="submit" class="btn-secondaire" style="width: auto; margin-top: 12px;">Régénérer le code</button>
+      </form>
+    <% } %>
+  </div>
+
+  <div class="repartition">
+    <h2 class="titre-section">Membres (<%= membres.length %>)</h2>
+    <div class="liste-transactions">
+      <% membres.forEach(function(m) { %>
+        <div class="transaction">
+          <div class="ligne-haut">
+            <div class="infos">
+              <div class="categorie"><%= m.nom %></div>
+              <div class="meta">
+                <%= m.role === 'PROPRIETAIRE' ? 'Propriétaire' : 'Employé' %> — depuis le <%= new Date(m.createdAt).toLocaleDateString('fr-FR') %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+</body>
+</html>

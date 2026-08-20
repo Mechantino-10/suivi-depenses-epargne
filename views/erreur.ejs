@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <%- include('partials/head', { titre: 'Erreur ' + code }) %>
+</head>
+<body class="page-auth">
+  <div class="auth-toggle"><%- include('partials/theme-toggle') %></div>
+
+  <div class="auth-marque">
+    <span class="logo-grand"><%= code === 404 ? '🔍' : '⚠️' %></span>
+    <p class="auth-sous-titre"><%= code %></p>
+  </div>
+
+  <div class="card auth-card" style="text-align: center;">
+    <p><%= message %></p>
+    <a class="btn-lien" href="/" style="margin-top: 16px; display: inline-block;">Retour à l'accueil</a>
+  </div>
+</body>
+</html>

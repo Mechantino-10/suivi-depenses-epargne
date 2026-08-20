@@ -1,0 +1,32 @@
+<header class="topbar">
+  <div class="marque">
+    <span class="logo">💰</span>
+    <span class="marque-texte">Suivi&nbsp;Dépenses</span>
+  </div>
+  <div class="nav-droite">
+    <%- include('theme-toggle') %>
+    <div class="avatar" title="<%= currentUser.nom %>"><%= currentUser.nom.charAt(0).toUpperCase() %></div>
+    <form method="POST" action="/deconnexion">
+      <button type="submit" class="btn-icone" title="Déconnexion" aria-label="Déconnexion">⏻</button>
+    </form>
+  </div>
+</header>
+
+<nav class="bottom-nav">
+  <a href="/" class="<%= actif === 'accueil' ? 'actif' : '' %>">
+    <span class="bottom-nav-icone">🏠</span>
+    <span>Accueil</span>
+  </a>
+  <a href="/transactions" class="<%= actif === 'transactions' ? 'actif' : '' %>">
+    <span class="bottom-nav-icone">💳</span>
+    <span>Transactions</span>
+  </a>
+  <a href="/objectifs" class="<%= actif === 'objectifs' ? 'actif' : '' %>">
+    <span class="bottom-nav-icone">🎯</span>
+    <span>Objectifs</span>
+  </a>
+  <a href="/boutique" class="<%= actif === 'boutique' ? 'actif' : '' %>">
+    <span class="bottom-nav-icone">👥</span>
+    <span>Équipe</span>
+  </a>
+</nav>

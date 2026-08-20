@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <%- include('../partials/head', { titre: "Objectif d'épargne" }) %>
+</head>
+<body class="avec-nav-bas">
+  <%- include('../partials/nav', { actif: 'objectifs' }) %>
+  <%- include('../partials/flash') %>
+
+  <div class="barre-actions">
+    <h1>Objectif d'épargne</h1>
+    <% if (!objectif) { %>
+      <a class="btn-lien" href="/objectifs/nouveau">+ Définir</a>
+    <% } %>
+  </div>
+
+  <% if (!objectif) { %>
+    <div class="vide card">
+      🎯 Aucun objectif défini pour l'instant.<br />
+      Clique sur "Définir" pour te fixer un objectif d'épargne.
+    </div>
+  <% } else { %>
+    <div class="card">
+      <p class="objectif-label">Objectif</p>
+      <p class="objectif-montant">
+        <%= objectif.montantCible.toLocaleString('fr-FR') %> FCFA
+      </p>
+
+      <div class="fond objectif-barre">
+        <div class="remplissage objectif-remplissage" style="width: <%= objectif.pourcentage %>%;"></div>
+      </div>
+      <p class="objectif-progres">
+        <strong><%= objectif.epargneAccumulee.toLocaleString('fr-FR') %> FCFA</strong> épargnés
+        (<%= objectif.pourcentage %>%)
+      </p>
+
+      <p class="objectif-echeance">
+        Date limite : <%= new Date(objectif.dateLimite).toLocaleDateString('fr-FR') %>
+        <% if (objectif.joursRestants >= 0) { %>
+          (<%= objectif.joursRestants %> jour<%= objectif.joursRestants !== 1 ? 's' : '' %> restant<%= objectif.joursRestants !== 1 ? 's' : '' %>)
+        <% } else { %>
+          <span class="objectif-depassee">(dépassée)</span>
+        <% } %>
+      </p>
+
+      <% if (objectif.pourcentage >= 100) { %>
+        <p class="ok objectif-atteint">🎉 Objectif atteint !</p>
+      <% } %>
+    </div>
+
+    <div class="barre-actions">
+      <a class="lien" href="/objectifs/modifier">Modifier l'objectif</a>
+      <form method="POST" action="/objectifs/supprimer" data-confirm="Supprimer cet objectif ?">
+        <button type="submit" class="btn-secondaire">Supprimer</button>
+      </form>
+    </div>
+  <% } %>
+
+  <% if (historique.length > 0) { %>
+    <h2 class="titre-section titre-historique">Historique</h2>
+    <div class="liste-transactions">
+      <% historique.forEach(function(h) { %>
+        <div class="transaction">
+          <div class="ligne-haut">
+            <div class="infos">
+              <div class="categorie"><%= h.montantCible.toLocaleString('fr-FR') %> FCFA</div>
+              <div class="meta">Échéance : <%= new Date(h.dateLimite).toLocaleDateString('fr-FR') %></div>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  <% } %>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <%- include('partials/head', { titre: 'Tableau de bord' }) %>
+</head>
+<body class="avec-nav-bas">
+  <%- include('partials/nav', { actif: 'accueil' }) %>
+
+  <h1>Tableau de bord</h1>
+
+  <div class="onglets">
+    <a href="/?periode=jour" class="<%= periode === 'jour' ? 'actif' : '' %>">Aujourd'hui</a>
+    <a href="/?periode=semaine" class="<%= periode === 'semaine' ? 'actif' : '' %>">Cette semaine</a>
+    <a href="/?periode=mois" class="<%= periode === 'mois' ? 'actif' : '' %>">Ce mois</a>
+  </div>
+
+  <div class="totaux">
+    <div class="tuile revenu">
+      <div class="tuile-icone">⬆️</div>
+      <div class="label">Revenus</div>
+      <div class="valeur">+<%= totaux.REVENU.toLocaleString('fr-FR') %> FCFA</div>
+    </div>
+    <div class="tuile depense">
+      <div class="tuile-icone">⬇️</div>
+      <div class="label">Dépenses</div>
+      <div class="valeur">-<%= totaux.DEPENSE.toLocaleString('fr-FR') %> FCFA</div>
+    </div>
+    <div class="tuile epargne">
+      <div class="tuile-icone">🐖</div>
+      <div class="label">Épargne</div>
+      <div class="valeur"><%= totaux.EPARGNE.toLocaleString('fr-FR') %> FCFA</div>
+    </div>
+    <div class="tuile <%= solde >= 0 ? 'solde-positif' : 'solde-negatif' %>">
+      <div class="tuile-icone">💼</div>
+      <div class="label">Solde disponible</div>
+      <div class="valeur"><%= solde.toLocaleString('fr-FR') %> FCFA</div>
+    </div>
+  </div>
+
+  <div class="evolution">
+    <h2 class="titre-section">Évolution du solde (14 derniers jours)</h2>
+    <svg class="graphique-evolution" viewBox="0 0 140 100" preserveAspectRatio="none" role="img" aria-label="Évolution du solde net sur 14 jours">
+      <line x1="0" y1="50" x2="140" y2="50" stroke="var(--border)" stroke-width="1" />
+      <% evolution.forEach(function(j, i) { %>
+        <% if (j.hauteur > 0) { %>
+          <rect
+            x="<%= i * 10 + 1 %>"
+            y="<%= j.positif ? 50 - j.hauteur : 50 %>"
+            width="8"
+            height="<%= j.hauteur %>"
+            rx="1.5"
+            fill="<%= j.positif ? 'var(--primary)' : 'var(--danger)' %>"
+          ><title><%= new Date(j.date).toLocaleDateString('fr-FR') %> : <%= j.net.toLocaleString('fr-FR') %> FCFA</title></rect>
+        <% } %>
+      <% }) %>
+    </svg>
+    <div class="evolution-legende">
+      <span><%= new Date(evolution[0].date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }) %></span>
+      <span>Aujourd'hui</span>
+    </div>
+  </div>
+
+  <div class="repartition">
+    <h2 class="titre-section">Répartition des dépenses par catégorie</h2>
+    <% if (categories.length === 0) { %>
+      <p class="vide">📭 Aucune dépense sur cette période.</p>
+    <% } else { %>
+      <% categories.forEach(function(c) { %>
+        <div class="barre-categorie">
+          <div class="entete">
+            <span><%= c.categorie %></span>
+            <span><%= c.montant.toLocaleString('fr-FR') %> FCFA (<%= c.pourcentage %>%)</span>
+          </div>
+          <div class="fond">
+            <div class="remplissage" style="width: <%= c.pourcentage %>%;"></div>
+          </div>
+        </div>
+      <% }) %>
+    <% } %>
+  </div>
+
+  <p class="lien-pleine-largeur"><a class="btn-lien" href="/transactions">Voir toutes mes transactions</a></p>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <%- include('../partials/head', { titre: (typeof modeEdition !== 'undefined' && modeEdition ? 'Modifier' : 'Nouvel') + ' objectif' }) %>
+</head>
+<body class="avec-nav-bas">
+  <%- include('../partials/nav', { actif: 'objectifs' }) %>
+
+  <h1><%= typeof modeEdition !== 'undefined' && modeEdition ? "Modifier l'objectif" : 'Nouvel objectif d\'épargne' %></h1>
+
+  <% if (erreurs.length > 0) { %>
+    <div class="erreurs">
+      <ul>
+        <% erreurs.forEach(function(e) { %>
+          <li><%= e %></li>
+        <% }) %>
+      </ul>
+    </div>
+  <% } %>
+
+  <form method="POST" action="<%= typeof modeEdition !== 'undefined' && modeEdition ? '/objectifs/modifier' : '/objectifs' %>">
+    <label for="montantCible">Montant cible (FCFA)</label>
+    <input type="number" id="montantCible" name="montantCible" min="1" max="999999999" step="1" value="<%= objectif.montantCible %>" required />
+
+    <label for="dateLimite">Date limite</label>
+    <input type="date" id="dateLimite" name="dateLimite" value="<%= objectif.dateLimite %>" required />
+
+    <button type="submit">Enregistrer</button>
+  </form>
+
+  <a class="lien" href="/objectifs">&larr; Retour</a>
+</body>
+</html>

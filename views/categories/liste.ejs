@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <%- include('../partials/head', { titre: 'Catégories' }) %>
+</head>
+<body class="avec-nav-bas">
+  <%- include('../partials/nav', { actif: 'transactions' }) %>
+
+  <h1>Mes catégories</h1>
+
+  <% if (erreur) { %>
+    <div class="erreurs"><%= erreur %></div>
+  <% } %>
+
+  <form method="POST" action="/categories" class="form-inline">
+    <input type="text" name="nom" placeholder="Nouvelle catégorie" maxlength="50" required />
+    <button type="submit">Ajouter</button>
+  </form>
+
+  <div class="liste-transactions categories-liste">
+    <% if (categories.length === 0) { %>
+      <div class="vide">🏷️ Aucune catégorie pour l'instant.</div>
+    <% } else { %>
+      <% categories.forEach(function(c) { %>
+        <div class="transaction">
+          <div class="ligne-haut">
+            <div class="infos"><span class="categorie"><%= c.nom %></span></div>
+          </div>
+          <div class="actions">
+            <form method="POST" action="/categories/<%= c.id %>/supprimer" data-confirm="Supprimer cette catégorie ?">
+              <button type="submit">Supprimer</button>
+            </form>
+          </div>
+        </div>
+      <% }) %>
+    <% } %>
+  </div>
+
+  <a class="lien" href="/transactions">&larr; Retour aux transactions</a>
+</body>
+</html>

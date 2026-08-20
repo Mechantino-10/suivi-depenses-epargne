@@ -1,0 +1,8 @@
+node_modules
+# Keep environment variables out of version control
+.env
+
+/generated/prisma
+
+# Local tooling config (machine-specific paths), not part of the app
+.claude/

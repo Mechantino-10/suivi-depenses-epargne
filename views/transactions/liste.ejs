@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <%- include('../partials/head', { titre: 'Transactions' }) %>
+</head>
+<body class="avec-nav-bas">
+  <%- include('../partials/nav', { actif: 'transactions' }) %>
+  <%- include('../partials/flash') %>
+
+  <%
+    const qs = [];
+    if (filtres.type) qs.push('type=' + encodeURIComponent(filtres.type));
+    if (filtres.categorie) qs.push('categorie=' + encodeURIComponent(filtres.categorie));
+    if (filtres.periode) qs.push('periode=' + encodeURIComponent(filtres.periode));
+    if (filtres.recherche) qs.push('recherche=' + encodeURIComponent(filtres.recherche));
+    const baseQs = qs.join('&');
+  %>
+
+  <div class="barre-actions">
+    <h1>Mes transactions</h1>
+    <a class="btn-lien" href="/transactions/nouvelle">+ Nouvelle</a>
+  </div>
+
+  <form class="filtres" method="GET" action="/transactions">
+    <input type="search" name="recherche" placeholder="Rechercher..." value="<%= filtres.recherche %>" maxlength="100" />
+
+    <select name="type">
+      <option value="">Tous les types</option>
+      <option value="DEPENSE" <%= filtres.type === 'DEPENSE' ? 'selected' : '' %>>Dépense</option>
+      <option value="REVENU" <%= filtres.type === 'REVENU' ? 'selected' : '' %>>Revenu</option>
+      <option value="EPARGNE" <%= filtres.type === 'EPARGNE' ? 'selected' : '' %>>Épargne</option>
+    </select>
+
+    <select name="categorie">
+      <option value="">Toutes les catégories</option>
+      <% categoriesExistantes.forEach(function(c) { %>
+        <option value="<%= c %>" <%= filtres.categorie === c ? 'selected' : '' %>><%= c %></option>
+      <% }) %>
+    </select>
+
+    <select name="periode">
+      <option value="">Toute période</option>
+      <option value="jour" <%= filtres.periode === 'jour' ? 'selected' : '' %>>Aujourd'hui</option>
+      <option value="semaine" <%= filtres.periode === 'semaine' ? 'selected' : '' %>>Cette semaine</option>
+      <option value="mois" <%= filtres.periode === 'mois' ? 'selected' : '' %>>Ce mois</option>
+    </select>
+
+    <button type="submit">Filtrer</button>
+  </form>
+
+  <div class="actions-secondaires">
+    <a class="lien-export" href="/transactions/export.csv<%= baseQs ? '?' + baseQs : '' %>">⬇️ CSV</a>
+    <a class="lien-export" href="/transactions/export.pdf<%= baseQs ? '?' + baseQs : '' %>">📄 PDF</a>
+    <a class="lien-export" href="/categories">🏷️ Catégories</a>
+  </div>
+
+  <div class="liste-transactions">
+    <% if (transactions.length === 0) { %>
+      <div class="vide">📭 Aucune transaction pour l'instant.</div>
+    <% } else { %>
+      <% transactions.forEach(function(t) { %>
+        <div class="transaction">
+          <div class="ligne-haut">
+            <div class="infos">
+              <div class="categorie"><%= t.categorie %></div>
+              <div class="meta">
+                <%= new Date(t.date).toLocaleDateString('fr-FR') %> · par <%= t.user.nom %>
+                <% if (t.description) { %> — <%= t.description %><% } %>
+              </div>
+            </div>
+            <div class="montant <%= t.type.toLowerCase() %>">
+              <%= t.type === 'DEPENSE' ? '-' : '+' %><%= Number(t.montant).toLocaleString('fr-FR', { minimumFractionDigits: 0 }) %> FCFA
+            </div>
+          </div>
+          <div class="actions">
+            <a href="/transactions/<%= t.id %>/modifier">Modifier</a>
+            <form method="POST" action="/transactions/<%= t.id %>/supprimer" data-confirm="Supprimer cette transaction ?">
+              <button type="submit">Supprimer</button>
+            </form>
+          </div>
+        </div>
+      <% }) %>
+    <% } %>
+  </div>
+
+  <% if (pagination.totalPages > 1) { %>
+    <div class="pagination">
+      <% if (pagination.page > 1) { %>
+        <a href="/transactions?<%= baseQs ? baseQs + '&' : '' %>page=<%= pagination.page - 1 %>">&larr; Précédent</a>
+      <% } else { %>
+        <span class="pagination-desactive">&larr; Précédent</span>
+      <% } %>
+      <span class="pagination-info">Page <%= pagination.page %> / <%= pagination.totalPages %></span>
+      <% if (pagination.page < pagination.totalPages) { %>
+        <a href="/transactions?<%= baseQs ? baseQs + '&' : '' %>page=<%= pagination.page + 1 %>">Suivant &rarr;</a>
+      <% } else { %>
+        <span class="pagination-desactive">Suivant &rarr;</span>
+      <% } %>
+    </div>
+  <% } %>
+</body>
+</html>

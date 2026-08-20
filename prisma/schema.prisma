@@ -1,0 +1,107 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum TransactionType {
+  DEPENSE
+  REVENU
+  EPARGNE
+}
+
+enum UserRole {
+  PROPRIETAIRE
+  EMPLOYE
+}
+
+model Boutique {
+  id             Int      @id @default(autoincrement())
+  nom            String
+  codeInvitation String   @unique
+  createdAt      DateTime @default(now())
+
+  users        User[]
+  transactions Transaction[]
+  goals        Goal[]
+  categories   Category[]
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  nom          String
+  telephone    String?  @unique
+  motDePasse   String?
+  googleId     String?  @unique
+  email        String?  @unique
+  role         UserRole @default(PROPRIETAIRE)
+  createdAt    DateTime @default(now())
+
+  boutique     Boutique @relation(fields: [boutiqueId], references: [id])
+  boutiqueId   Int
+
+  transactions Transaction[]
+  goals        Goal[]
+}
+
+model Category {
+  id        Int      @id @default(autoincrement())
+  nom       String
+  createdAt DateTime @default(now())
+
+  boutique   Boutique @relation(fields: [boutiqueId], references: [id], onDelete: Cascade)
+  boutiqueId Int
+
+  @@unique([boutiqueId, nom])
+}
+
+// Table gérée par connect-pg-simple (sessions HTTP), pas par les migrations Prisma.
+// Déclarée ici uniquement pour que `prisma migrate diff` ne propose pas de la supprimer.
+model Session {
+  sid    String   @id @db.VarChar
+  sess   Json     @db.Json
+  expire DateTime @db.Timestamp(6)
+
+  @@index([expire], map: "IDX_session_expire")
+  @@map("session")
+}
+
+model Transaction {
+  id          Int              @id @default(autoincrement())
+  type        TransactionType
+  categorie   String
+  montant     Decimal          @db.Decimal(12, 2)
+  date        DateTime
+  description String?
+  createdAt   DateTime         @default(now())
+
+  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      Int
+
+  boutique    Boutique         @relation(fields: [boutiqueId], references: [id], onDelete: Cascade)
+  boutiqueId  Int
+
+  @@index([boutiqueId, date])
+  @@index([boutiqueId, type])
+}
+
+model Goal {
+  id           Int      @id @default(autoincrement())
+  montantCible Decimal  @db.Decimal(12, 2)
+  dateLimite   DateTime
+  createdAt    DateTime @default(now())
+
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       Int
+
+  boutique     Boutique @relation(fields: [boutiqueId], references: [id], onDelete: Cascade)
+  boutiqueId   Int
+}

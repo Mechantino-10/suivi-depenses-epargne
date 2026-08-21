@@ -5,7 +5,7 @@
   </div>
   <div class="nav-droite">
     <%- include('theme-toggle') %>
-    <div class="avatar" title="<%= currentUser.nom %>"><%= currentUser.nom.charAt(0).toUpperCase() %></div>
+    <a class="avatar" href="/parametres" title="Paramètres — <%= currentUser.nom %>"><%= currentUser.nom.charAt(0).toUpperCase() %></a>
     <form method="POST" action="/deconnexion">
       <button type="submit" class="btn-icone" title="Déconnexion" aria-label="Déconnexion">⏻</button>
     </form>

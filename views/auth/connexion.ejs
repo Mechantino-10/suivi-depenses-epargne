@@ -23,7 +23,10 @@
       <input type="tel" id="telephone" name="telephone" value="<%= telephone %>" maxlength="16" required />
 
       <label for="motDePasse">Mot de passe</label>
-      <input type="password" id="motDePasse" name="motDePasse" maxlength="72" required />
+      <div class="champ-mot-de-passe">
+        <input type="password" id="motDePasse" name="motDePasse" maxlength="72" required />
+        <%- include('../partials/bouton-oeil', { cible: 'motDePasse' }) %>
+      </div>
 
       <button type="submit">Se connecter</button>
     </form>

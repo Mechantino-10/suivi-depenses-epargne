@@ -169,6 +169,62 @@ select:focus {
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 20%, transparent);
 }
 
+.champ-mot-de-passe {
+  position: relative;
+  margin-top: 4px;
+}
+
+.champ-mot-de-passe input {
+  margin-top: 0;
+  padding-right: 52px;
+}
+
+.btn-oeil {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.btn-oeil:hover {
+  color: var(--text);
+}
+
+.btn-oeil:focus-visible {
+  outline: none;
+  border-radius: 6px;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 20%, transparent);
+}
+
+.btn-oeil svg {
+  display: none;
+  width: 20px;
+  height: 20px;
+}
+
+.btn-oeil .icon-oeil-ouvert {
+  display: block;
+}
+
+.btn-oeil.actif .icon-oeil-ouvert {
+  display: none;
+}
+
+.btn-oeil.actif .icon-oeil-barre {
+  display: block;
+}
+
 button {
   margin-top: 20px;
   width: 100%;
@@ -354,6 +410,12 @@ body.avec-nav-bas {
   font-weight: 700;
   font-size: 0.9rem;
   flex-shrink: 0;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.avatar:hover {
+  opacity: 0.85;
 }
 
 .btn-icone {

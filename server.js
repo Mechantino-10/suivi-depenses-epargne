@@ -12,6 +12,7 @@ const dashboardRoutes = require("./routes/dashboard");
 const goalRoutes = require("./routes/goals");
 const categoryRoutes = require("./routes/categories");
 const boutiqueRoutes = require("./routes/boutique");
+const parametresRoutes = require("./routes/parametres");
 
 const app = express();
 
@@ -78,6 +79,7 @@ app.use("/", dashboardRoutes);
 app.use("/", goalRoutes);
 app.use("/", categoryRoutes);
 app.use("/", boutiqueRoutes);
+app.use("/", parametresRoutes);
 
 app.use((req, res) => {
   res.status(404).render("erreur", { code: 404, message: "Page introuvable." });

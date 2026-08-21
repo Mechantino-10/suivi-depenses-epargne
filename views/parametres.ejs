@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <%- include('partials/head', { titre: 'Paramètres' }) %>
+</head>
+<body class="avec-nav-bas">
+  <%- include('partials/nav', { actif: 'parametres' }) %>
+  <%- include('partials/flash') %>
+
+  <h1>Paramètres</h1>
+
+  <div class="card">
+    <p class="objectif-label">Profil</p>
+    <% if (erreurs.length > 0) { %>
+      <div class="erreurs">
+        <ul>
+          <% erreurs.forEach(function(e) { %><li><%= e %></li><% }) %>
+        </ul>
+      </div>
+    <% } %>
+    <form method="POST" action="/parametres">
+      <label for="nom">Nom</label>
+      <input type="text" id="nom" name="nom" value="<%= currentUser.nom %>" minlength="2" maxlength="100" required />
+      <button type="submit">Enregistrer</button>
+    </form>
+  </div>
+
+  <div class="card">
+    <p class="objectif-label">Mot de passe</p>
+
+    <% if (!currentUser.motDePasse) { %>
+      <p class="objectif-echeance">Tu es connecté via Google — il n'y a pas de mot de passe à gérer ici.</p>
+    <% } else { %>
+      <% if (erreursMotDePasse.length > 0) { %>
+        <div class="erreurs">
+          <ul>
+            <% erreursMotDePasse.forEach(function(e) { %><li><%= e %></li><% }) %>
+          </ul>
+        </div>
+      <% } %>
+      <form method="POST" action="/parametres/mot-de-passe">
+        <label for="motDePasseActuel">Mot de passe actuel</label>
+        <div class="champ-mot-de-passe">
+          <input type="password" id="motDePasseActuel" name="motDePasseActuel" maxlength="72" required />
+          <%- include('partials/bouton-oeil', { cible: 'motDePasseActuel' }) %>
+        </div>
+
+        <label for="nouveauMotDePasse">Nouveau mot de passe</label>
+        <div class="champ-mot-de-passe">
+          <input type="password" id="nouveauMotDePasse" name="nouveauMotDePasse" minlength="6" maxlength="72" required />
+          <%- include('partials/bouton-oeil', { cible: 'nouveauMotDePasse' }) %>
+        </div>
+
+        <label for="confirmationMotDePasse">Confirmer le nouveau mot de passe</label>
+        <div class="champ-mot-de-passe">
+          <input type="password" id="confirmationMotDePasse" name="confirmationMotDePasse" minlength="6" maxlength="72" required />
+          <%- include('partials/bouton-oeil', { cible: 'confirmationMotDePasse' }) %>
+        </div>
+
+        <button type="submit">Changer le mot de passe</button>
+      </form>
+    <% } %>
+  </div>
+</body>
+</html>

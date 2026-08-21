@@ -13,20 +13,16 @@
 </header>
 
 <nav class="bottom-nav">
-  <a href="/" class="<%= actif === 'accueil' ? 'actif' : '' %>">
+  <a href="/" class="<%= actif === 'accueil' ? 'actif' : '' %>" aria-label="Accueil" title="Accueil">
     <span class="bottom-nav-icone">🏠</span>
-    <span>Accueil</span>
   </a>
-  <a href="/transactions" class="<%= actif === 'transactions' ? 'actif' : '' %>">
+  <a href="/transactions" class="<%= actif === 'transactions' ? 'actif' : '' %>" aria-label="Transactions" title="Transactions">
     <span class="bottom-nav-icone">💳</span>
-    <span>Transactions</span>
   </a>
-  <a href="/objectifs" class="<%= actif === 'objectifs' ? 'actif' : '' %>">
+  <a href="/objectifs" class="<%= actif === 'objectifs' ? 'actif' : '' %>" aria-label="Objectifs" title="Objectifs">
     <span class="bottom-nav-icone">🎯</span>
-    <span>Objectifs</span>
   </a>
-  <a href="/boutique" class="<%= actif === 'boutique' ? 'actif' : '' %>">
+  <a href="/boutique" class="<%= actif === 'boutique' ? 'actif' : '' %>" aria-label="Équipe" title="Équipe">
     <span class="bottom-nav-icone">👥</span>
-    <span>Équipe</span>
   </a>
 </nav>

@@ -27,12 +27,21 @@
     </select>
 
     <label for="categorie">Catégorie</label>
-    <input type="text" id="categorie" name="categorie" list="categories-suggestions" value="<%= transaction.categorie %>" maxlength="50" required />
-    <datalist id="categories-suggestions">
+    <select id="categorie" name="categorie" required>
+      <option value="" disabled <%= !transaction.categorie ? 'selected' : '' %>>-- Choisir une catégorie --</option>
       <% categoriesSuggestions.forEach(function(c) { %>
-        <option value="<%= c %>"></option>
+        <option value="<%= c %>" <%= transaction.categorie === c ? 'selected' : '' %>><%= c %></option>
       <% }) %>
-    </datalist>
+      <% if (transaction.categorie && !categoriesSuggestions.includes(transaction.categorie)) { %>
+        <option value="<%= transaction.categorie %>" selected><%= transaction.categorie %></option>
+      <% } %>
+      <option value="__autre__">+ Autre…</option>
+    </select>
+
+    <div id="categorie-autre-wrapper" style="display: none;">
+      <label for="categorieAutreTexte">Nouvelle catégorie</label>
+      <input type="text" id="categorieAutreTexte" maxlength="50" placeholder="Nom de la catégorie" />
+    </div>
 
     <label for="montant">Montant (FCFA)</label>
     <input type="number" id="montant" name="montant" min="1" max="999999999" step="1" value="<%= transaction.montant %>" required />

@@ -17,6 +17,15 @@ async function chargerCategories(boutiqueId) {
   return categories.map((c) => c.nom);
 }
 
+async function assurerCategorie(boutiqueId, nom) {
+  if (!nom || nom.length > 50) return;
+  await prisma.category.upsert({
+    where: { boutiqueId_nom: { boutiqueId, nom } },
+    update: {},
+    create: { nom, boutiqueId },
+  });
+}
+
 function validerTransaction({ type, categorie, montant, date, description }) {
   const erreurs = [];
   if (!TYPES_VALIDES.includes(type)) {
@@ -227,6 +236,7 @@ router.post("/transactions", async (req, res) => {
       boutiqueId: res.locals.currentUser.boutiqueId,
     },
   });
+  await assurerCategorie(res.locals.currentUser.boutiqueId, categorie.trim());
 
   req.session.flash = { type: "succes", text: "Transaction ajoutée ✓" };
   res.redirect("/transactions");
@@ -282,6 +292,7 @@ router.post("/transactions/:id", async (req, res) => {
       description: description && description.trim() ? description.trim() : null,
     },
   });
+  await assurerCategorie(res.locals.currentUser.boutiqueId, categorie.trim());
 
   req.session.flash = { type: "succes", text: "Transaction mise à jour ✓" };
   res.redirect("/transactions");

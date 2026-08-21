@@ -473,33 +473,31 @@ body.avec-nav-bas {
 
 .bottom-nav {
   position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  max-width: 480px;
-  margin: 0 auto;
+  left: 50%;
+  bottom: calc(16px + env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: calc(100vw - 32px);
+  margin: 0;
   display: flex;
-  justify-content: space-around;
+  gap: 4px;
   background: var(--surface);
-  border-top: 1px solid var(--border);
-  border-radius: 16px 16px 0 0;
-  padding: 8px 8px calc(8px + env(safe-area-inset-bottom));
-  box-shadow: 0 -2px 12px var(--shadow);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 6px;
+  box-shadow: 0 4px 16px var(--shadow);
   z-index: 20;
 }
 
 .bottom-nav a {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 2px;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
   text-decoration: none;
   color: var(--text-muted);
-  font-size: 0.7rem;
-  font-weight: 600;
-  flex: 1;
-  padding: 6px 0;
-  border-radius: 10px;
+  border-radius: 50%;
 }
 
 .bottom-nav-icone {
@@ -509,7 +507,7 @@ body.avec-nav-bas {
 
 .bottom-nav a.actif {
   color: var(--primary);
-  background: color-mix(in srgb, var(--primary) 12%, transparent);
+  background: color-mix(in srgb, var(--primary) 18%, transparent);
 }
 
 .onglets {
